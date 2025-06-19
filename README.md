@@ -6,6 +6,10 @@
 
 A library for communicating between Ladybug Tools core libraries and FreeCAD
 
+Need to change all code to communicate with FreeCAD
+
+freeCADsceneObject.py start of Part::FeaturePython for Scene
+
 # This library is used by both the Grasshopper and Rhino plugins to communicate with
 # the ladybug core Python library. Note that this library has dependencies
 # on Rhino SDK and Grasshopper SDK and is intended to contain all of such dependencies
