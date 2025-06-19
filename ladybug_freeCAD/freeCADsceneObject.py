@@ -1,6 +1,3 @@
-import FreeCAD
-
-Class FreeCADsceneObject():
 
 # ***************************************************************************
 # *                                                                         *
@@ -51,6 +48,9 @@ class LadyBugScene(BaseObjectClass):
         
     def createGeometry(self, fp):
         currPlacement = fp.Placement
+        #fp.Shape = Part.Shape()
+        # Just show a Box for Now
+        fp.Shape = Part.makeBox(10, 10, 10)
 
     def onChanged(self, fp, prop):
         # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
