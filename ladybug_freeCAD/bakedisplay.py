@@ -43,7 +43,7 @@ for i, lt in enumerate(rhdoc.ActiveDoc.Linetypes):
             break
 
 
-"""____________BAKE 2D DISPLAY GEOMETRY TO THE RHINO SCENE____________"""
+"""____________BAKE 2D DISPLAY GEOMETRY TO THE FreeCAD SCENE Object____________"""
 
 
 def bake_display_vector2d(vector, z=0, layer_name=None, attributes=None):
@@ -102,7 +102,7 @@ def bake_display_mesh2d(mesh, z=0, layer_name=None, attributes=None):
     return bake_mesh2d(mesh.geometry, z, attributes=attrib)
 
 
-"""____________BAKE 3D DISPLAY GEOMETRY TO THE RHINO SCENE____________"""
+"""____________BAKE 3D DISPLAY GEOMETRY TO THE FreeCAD SCENE Object____________"""
 
 
 def bake_display_vector3d(vector, layer_name=None, attributes=None):

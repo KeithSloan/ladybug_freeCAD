@@ -1,3 +1,5 @@
+import FreeCAD
+
 """Functions to bake from Ladybug geometries into a Rhino document."""
 from .fromgeometry import from_point2d, from_arc2d, from_polyline2d, from_mesh2d, \
     from_point3d, from_plane, from_arc3d, from_polyline3d, \

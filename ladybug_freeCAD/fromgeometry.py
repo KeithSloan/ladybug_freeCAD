@@ -1,4 +1,5 @@
-"""Functions to translate from Ladybug geometries to Rhino geometries."""
+#"""Functions to translate from Ladybug geometries to Rhino geometries."""
+"""Functions to translate from Ladybug geometries to FreeCAD geometries."""
 from __future__ import division
 
 from .config import tolerance
@@ -17,27 +18,33 @@ except ImportError as e:
 
 """____________2D GEOMETRY TRANSLATORS____________"""
 
+import FreeCAD, Part
 
 def from_vector2d(vector):
-    """Rhino Vector3d from ladybug Vector2D."""
-    return rg.Vector3d(vector.x, vector.y, 0)
-
+    #"""Rhino Vector3d from ladybug Vector2D."""
+    #return rg.Vector3d(vector.x, vector.y, 0)
+    """FreeCAD Vector3d from ladybug Vector2D"""
+    """ Need for float?? """
+    return FreeCAD.Vector(vector.x, vector.y, 0)
 
 def from_point2d(point, z=0):
-    """Rhino Point3d from ladybug Point2D."""
-    return rg.Point3d(point.x, point.y, z)
+    #"""Rhino Point3d from ladybug Point2D."""
+    #return rg.Point3d(point.x, point.y, z)
+    """ FreeCAD Point3d from ladybug Point2D."""
+    """ Need for float?? """
+    return FreeCAD.Vector(point.x, point.y, z)
 
-
+# ToDo ??
 def from_ray2d(ray, z=0):
     """Rhino Ray3d from ladybug Ray2D."""
     return rg.Ray3d(from_point2d(ray.p, z), from_vector2d(ray.v))
 
-
+# ToDo ??
 def from_linesegment2d(line, z=0):
     """Rhino LineCurve from ladybug LineSegment2D."""
     return rg.LineCurve(from_point2d(line.p1, z), from_point2d(line.p2, z))
 
-
+# ToDo ??
 def from_arc2d(arc, z=0):
     """Rhino Arc from ladybug Arc2D."""
     if arc.is_circle:
@@ -46,13 +53,13 @@ def from_arc2d(arc, z=0):
         pts = (arc.p1, arc.midpoint, arc.p2)
         return rg.Arc(*(from_point2d(pt, z) for pt in pts))
 
-
+# ToDo ??
 def from_polygon2d(polygon, z=0):
     """Rhino closed PolyLineCurve from ladybug Polygon2D."""
     return rg.PolylineCurve(
         [from_point2d(pt, z) for pt in polygon.vertices] + [from_point2d(polygon[0], z)])
 
-
+# ToDo ??
 def from_polyline2d(polyline, z=0):
     """Rhino closed PolyLineCurve from ladybug Polyline2D."""
     rhino_pts = [from_point2d(pt, z) for pt in polyline.vertices]
@@ -62,13 +69,13 @@ def from_polyline2d(polyline, z=0):
     else:
         return rg.PolylineCurve(rhino_pts)
 
-
+# ToDo ??
 def from_mesh2d(mesh, z=0):
     """Rhino Mesh from ladybug Mesh2D."""
     pt_function = _get_point2d_function(z)
     return _translate_mesh(mesh, pt_function)
 
-
+# ToDo ??
 def _get_point2d_function(z_val):
     def point2d_function(pt):
         return from_point2d(pt, z_val)
@@ -79,30 +86,37 @@ def _get_point2d_function(z_val):
 
 
 def from_vector3d(vector):
-    """Rhino Vector3d from ladybug Vector3D."""
-    return rg.Vector3d(vector.x, vector.y, vector.z)
+    #"""Rhino Vector3d from ladybug Vector3D."""
+    #return rg.Vector3d(vector.x, vector.y, vector.z)
+    """ FreeCAD Vector3d from ladybug Vector3D."""
+    """ Float ??? """
+    return FreeCAD.Vector(vector.x, vector.y, vector.z)
 
 
 def from_point3d(point):
-    """Rhino Point3d from ladybug Point3D."""
-    return rg.Point3d(point.x, point.y, point.z)
+    # """Rhino Point3d from ladybug Point3D."""
+    # return rg.Point3d(point.x, point.y, point.z)
+    """ FreeCAD Point3d from ladybug Point3D."""
+    return FreeCAD.Vector(point.x, point.y, point.z)
 
-
+# ToDo ??
 def from_ray3d(ray):
     """Rhino Ray3d from ladybug Ray3D."""
     return rg.Ray3d(from_point3d(ray.p), from_vector3d(ray.v))
 
-
+# ToDo ??
 def from_linesegment3d(line):
     """Rhino LineCurve from ladybug LineSegment3D."""
     return rg.LineCurve(from_point3d(line.p1), from_point3d(line.p2))
 
 
 def from_plane(pl):
-    """Rhino Plane from ladybug Plane."""
-    return rg.Plane(from_point3d(pl.o), from_vector3d(pl.x), from_vector3d(pl.y))
+    #"""Rhino Plane from ladybug Plane."""
+    #return rg.Plane(from_point3d(pl.o), from_vector3d(pl.x), from_vector3d(pl.y))
+    """ Rhino Plane from ladybug Plane."""
+    return Part.Plane(from_point3d(pl.o), from_vector3d(pl.x), from_vector3d(pl.y))
 
-
+# ToDo ??
 def from_arc3d(arc):
     """Rhino Arc from ladybug Arc3D."""
     if arc.is_circle:
@@ -111,7 +125,7 @@ def from_arc3d(arc):
         pts = (arc.p1, arc.midpoint, arc.p2)
         return rg.Arc(*(from_point3d(pt) for pt in pts))
 
-
+# ToDo ??
 def from_polyline3d(polyline):
     """Rhino closed PolyLineCurve from ladybug Polyline3D."""
     rhino_pts = [from_point3d(pt) for pt in polyline.vertices]
@@ -121,12 +135,12 @@ def from_polyline3d(polyline):
     else:
         return rg.PolylineCurve(rhino_pts)
 
-
+# ToDo ??
 def from_mesh3d(mesh):
     """Rhino Mesh from ladybug Mesh3D."""
     return _translate_mesh(mesh, from_point3d)
 
-
+# ToDo ??
 def from_face3d(face):
     """Rhino Brep from ladybug Face3D."""
     segs = [from_linesegment3d(seg) for seg in face.boundary_segments]
@@ -147,7 +161,7 @@ def from_face3d(face):
             brep.Loops.AddPlanarFaceLoop(0, rg.BrepLoopType.Inner, trim_crvs)
     return brep
 
-
+# ToDo ??
 def from_polyface3d(polyface):
     """Rhino Brep from ladybug Polyface3D."""
     rh_faces = [from_face3d(face) for face in polyface.faces]
@@ -155,18 +169,18 @@ def from_polyface3d(polyface):
     if len(brep) == 1:
         return brep[0]
 
-
+# ToDo ??
 def from_sphere(sphere):
     """Rhino Sphere from ladybug Sphere."""
     return rg.Sphere(from_point3d(sphere.center), sphere.radius)
 
-
+# ToDo ??
 def from_cone(cone):
     """Rhino Cone from ladybug Cone."""
     plane = rg.Plane(from_point3d(cone.vertex), from_vector3d(cone.axis.normalize()))
     return rg.Cone(plane, cone.height, cone.radius)
 
-
+# ToDo ??
 def from_cylinder(cylinder):
     """Rhino Cone from ladybug Cone."""
     return rg.Cylinder(from_arc3d(cylinder.base_bottom), cylinder.height)
@@ -174,7 +188,7 @@ def from_cylinder(cylinder):
 
 """________ADDITIONAL 3D GEOMETRY TRANSLATORS________"""
 
-
+# ToDo ??
 def from_polyline2d_to_joined_polyline(polylines, z=0):
     """Rhino PolylineCurve made by joining list of Polyline2D.
 
@@ -197,7 +211,7 @@ def from_polyline2d_to_joined_polyline(polylines, z=0):
             line_crv.append(from_polyline2d(pl))
     return rg.Curve.JoinCurves(line_crv)[0]
 
-
+# ToDo ??
 def from_polyline2d_to_offset_brep(polylines, offset, z=0):
     """Rhino Brep made by offsetting a joined list of Polyline2D inward.
 
@@ -224,7 +238,7 @@ def from_polyline2d_to_offset_brep(polylines, offset, z=0):
                 return offset_brep[0]
     return curve
 
-
+# ToDo ??
 def from_face3d_to_wireframe(face):
     """Rhino PolyLineCurves from ladybug Face3D.
 
@@ -239,12 +253,12 @@ def from_face3d_to_wireframe(face):
         return boundary + [_polyline_points(tup) for tup in face.holes]
     return boundary
 
-
+# ToDo ??
 def from_polyface3d_to_wireframe(polyface):
     """Rhino PolyLineCurve from ladybug Polyface3D."""
     return [f for face in polyface.faces for f in from_face3d_to_wireframe(face)]
 
-
+# ToDo ??
 def from_mesh3d_to_wireframe(mesh):
     """Rhino PolyLineCurves from ladybug Mesh3D.
 
@@ -259,7 +273,7 @@ def from_mesh3d_to_wireframe(mesh):
         line_curves.append(from_polyline3d(edge))
     return line_curves
 
-
+# ToDo ??
 def from_face3d_to_solid(face, offset):
     """Rhino Solid Brep from a ladybug Face3D and an offset from the base face.
 
@@ -271,12 +285,12 @@ def from_face3d_to_solid(face, offset):
     return rg.Brep.CreateFromOffsetFace(
         srf_brep.Faces[0], offset, tolerance, False, True)
 
-
+# ToDo ??
 def from_face3ds_to_joined_brep(faces):
     """A list of joined Breps from an array of ladybug Face3D."""
     return rg.Brep.JoinBreps([from_face3d(face) for face in faces], tolerance)
 
-
+# ToDo ??
 def from_face3ds_to_colored_mesh(faces, color):
     """Colored Rhino mesh from an array of ladybug Face3D and ladybug Color.
 
@@ -291,7 +305,7 @@ def from_face3ds_to_colored_mesh(faces, color):
     joined_mesh.VertexColors.CreateMonotoneMesh(color_to_color(color))
     return joined_mesh
 
-
+# ToDo ??
 def from_mesh3ds_to_colored_mesh(meshes, color):
     """Colored Rhino mesh from an array of ladybug Mesh3D and ladybug Color.
 
@@ -306,7 +320,7 @@ def from_mesh3ds_to_colored_mesh(meshes, color):
     joined_mesh.VertexColors.CreateMonotoneMesh(color_to_color(color))
     return joined_mesh
 
-
+# ToDo ??
 def from_mesh2d_to_outline(mesh, z=0):
     """Rhino Polylines from the faces of ladybug Mesh2D."""
     pt_function = _get_point2d_function(z)
@@ -317,7 +331,7 @@ def from_mesh2d_to_outline(mesh, z=0):
         face_plines.append(rg.PolylineCurve(outline))
     return face_plines
 
-
+# ToDo ??
 def from_mesh3d_to_outline(mesh):
     """Rhino Mesh and Polylines from the ladybug Mesh3D.
 
@@ -331,7 +345,7 @@ def from_mesh3d_to_outline(mesh):
 
 """________________EXTRA HELPER FUNCTIONS________________"""
 
-
+# ToDo ??
 def _translate_mesh(mesh, pt_function):
     """Translates both 2D and 3D meshes to Rhino"""
     rhino_mesh = rg.Mesh()
@@ -371,7 +385,7 @@ def _translate_mesh(mesh, pt_function):
                 rhino_mesh.VertexColors[i] = color_to_color(col)
     return rhino_mesh
 
-
+# ToDo ??
 def _polyline_points(tup):
     """Convert a tuple of Ladybug Geometry points to a Rhino Polyline."""
     return rg.PolylineCurve([from_point3d(pt) for pt in tup] + [from_point3d(tup[0])])

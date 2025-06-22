@@ -40,8 +40,13 @@ class LadyBugScene(BaseObjectClass):
 
 	def addLadyBugSceneObject(self, parent):
         # Add new FC object to parent
-        print(f"Add LadyBug Scene Object")
+        print("Add LadyBug Scene Object")
         self.obj = parent.newObject("Part::PythonFeature","LadyBugScene")
+
+    def add2DocLadyBugSceneObject(self):
+        # Add new FC object to Active Document
+        print("Add LadyBug Scene Object to Active Document")
+        self.obj = FreeCAD.ActiveDocument.addObject("Part::PythonFeature","LadyBugScene")
 
 	def execute(self, fp):
         self.createGeometry(fp)
@@ -51,7 +56,7 @@ class LadyBugScene(BaseObjectClass):
         #fp.Shape = Part.Shape()
         # Just show a Box for Now
         fp.Shape = Part.makeBox(10, 10, 10)
-
+        
     def onChanged(self, fp, prop):
         # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
         if "Restore" in fp.State:
